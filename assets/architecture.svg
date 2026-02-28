@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" fill="none">
+  <!-- User -->
+  <text x="300" y="30" text-anchor="middle" fill="white" font-family="sans-serif" font-size="16" font-weight="bold">사용자</text>
+
+  <!-- Branch -->
+  <line x1="300" y1="38" x2="300" y2="52" stroke="white" stroke-width="1.5"/>
+  <line x1="300" y1="52" x2="160" y2="52" stroke="white" stroke-width="1.5"/>
+  <line x1="300" y1="52" x2="440" y2="52" stroke="white" stroke-width="1.5"/>
+  <line x1="160" y1="52" x2="160" y2="62" stroke="white" stroke-width="1.5"/>
+  <line x1="440" y1="52" x2="440" y2="62" stroke="white" stroke-width="1.5"/>
+
+  <!-- Web Chat -->
+  <rect x="60" y="62" width="200" height="34" rx="4" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,0.06)"/>
+  <text x="160" y="84" text-anchor="middle" fill="white" font-family="sans-serif" font-size="14">Web Chat UI (S3+CF)</text>
+
+  <!-- Telegram -->
+  <rect x="340" y="62" width="200" height="34" rx="4" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,0.06)"/>
+  <text x="440" y="84" text-anchor="middle" fill="white" font-family="sans-serif" font-size="14">Telegram Bot</text>
+
+  <!-- Merge arrow -->
+  <line x1="160" y1="96" x2="160" y2="118" stroke="white" stroke-width="1.5"/>
+  <line x1="440" y1="96" x2="440" y2="118" stroke="white" stroke-width="1.5"/>
+  <line x1="160" y1="118" x2="440" y2="118" stroke="white" stroke-width="1.5"/>
+  <line x1="300" y1="118" x2="300" y2="132" stroke="white" stroke-width="1.5"/>
+  <polygon points="294,129 300,140 306,129" fill="white"/>
+
+  <!-- API Gateway -->
+  <rect x="120" y="140" width="360" height="38" rx="4" stroke="#FF9900" stroke-width="1.5" fill="rgba(255,153,0,0.08)"/>
+  <text x="300" y="164" text-anchor="middle" fill="white" font-family="sans-serif" font-size="15" font-weight="bold">API Gateway (WS + REST)</text>
+
+  <!-- Arrow -->
+  <line x1="300" y1="178" x2="300" y2="198" stroke="white" stroke-width="1.5"/>
+  <polygon points="294,195 300,206 306,195" fill="white"/>
+
+  <!-- Lambda -->
+  <rect x="120" y="206" width="360" height="38" rx="4" stroke="#FF9900" stroke-width="1.5" fill="rgba(255,153,0,0.08)"/>
+  <text x="300" y="230" text-anchor="middle" fill="white" font-family="sans-serif" font-size="15" font-weight="bold">Lambda x 7</text>
+
+  <!-- Arrow -->
+  <line x1="300" y1="244" x2="300" y2="264" stroke="white" stroke-width="1.5"/>
+  <polygon points="294,261 300,272 306,261" fill="white"/>
+
+  <!-- Fargate container -->
+  <rect x="100" y="272" width="400" height="100" rx="6" stroke="#FF9900" stroke-width="2" fill="rgba(255,153,0,0.05)"/>
+  <text x="300" y="293" text-anchor="middle" fill="#FF9900" font-family="sans-serif" font-size="12" font-weight="bold">ECS Fargate</text>
+
+  <!-- Bridge + OpenClaw inside -->
+  <rect x="130" y="302" width="150" height="30" rx="4" stroke="white" stroke-width="1" fill="rgba(255,255,255,0.06)"/>
+  <text x="205" y="322" text-anchor="middle" fill="white" font-family="sans-serif" font-size="13">Bridge :8080</text>
+
+  <text x="300" y="322" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-family="sans-serif" font-size="16">&#x21C4;</text>
+
+  <rect x="320" y="302" width="150" height="30" rx="4" stroke="white" stroke-width="1" fill="rgba(255,255,255,0.06)"/>
+  <text x="395" y="322" text-anchor="middle" fill="white" font-family="sans-serif" font-size="13">OpenClaw GW</text>
+
+  <!-- Arrows to storage (fan out) -->
+  <line x1="170" y1="372" x2="170" y2="398" stroke="white" stroke-width="1.5"/>
+  <polygon points="164,395 170,406 176,395" fill="white"/>
+
+  <line x1="300" y1="372" x2="300" y2="398" stroke="white" stroke-width="1.5"/>
+  <polygon points="294,395 300,406 306,395" fill="white"/>
+
+  <line x1="430" y1="372" x2="430" y2="398" stroke="white" stroke-width="1.5"/>
+  <polygon points="424,395 430,406 436,395" fill="white"/>
+
+  <!-- Storage (centered) -->
+  <rect x="100" y="408" width="140" height="34" rx="4" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,0.06)"/>
+  <text x="170" y="430" text-anchor="middle" fill="white" font-family="sans-serif" font-size="14">DynamoDB x 5</text>
+
+  <rect x="260" y="408" width="80" height="34" rx="4" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,0.06)"/>
+  <text x="300" y="430" text-anchor="middle" fill="white" font-family="sans-serif" font-size="14">S3</text>
+
+  <rect x="390" y="408" width="80" height="34" rx="4" stroke="white" stroke-width="1.5" fill="rgba(255,255,255,0.06)"/>
+  <text x="430" y="430" text-anchor="middle" fill="white" font-family="sans-serif" font-size="14">SSM</text>
+</svg>

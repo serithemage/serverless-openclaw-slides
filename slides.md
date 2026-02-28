@@ -3,7 +3,7 @@ marp: true
 theme: unicorn-day
 size: 16:9
 paginate: true
-footer: "AWS Unicorn Day 2026"
+footer: "&copy; 2026, Amazon Web Services, Inc. or its affiliates. All rights reserved. Amazon Confidential and Trademark."
 ---
 
 <!-- _class: title -->
@@ -105,7 +105,8 @@ footer: "AWS Unicorn Day 2026"
 
 <br>
 
-> "강력한 보안을 유지하면서, 최소한의 비용으로 프라이빗 OpenClaw 환경 구축. 이 아이디어를 **바이브 코딩** 으로 구현하면?"
+> "강력한 보안을 유지하면서, 최소한의 비용으로 프라이빗 OpenClaw 환경 구축. 
+> 이 아이디어를 **바이브 코딩** 으로 구현하려면?"
 
 ---
 
@@ -137,20 +138,9 @@ footer: "AWS Unicorn Day 2026"
 
 ---
 
-# Idea → Implementation → Learning
+# 바이브 코딩의 핵심 사이클
 
-### 바이브 코딩의 핵심 사이클
-
-```
-  ┌──────────┐     ┌──────────────┐     ┌──────────┐
-  │  Idea    │────→│Implementation│────→│ Learning │
-  │ (아이디어)│     │   (구현)      │     │  (학습)   │
-  └──────────┘     └──────────────┘     └──────────┘
-       ↑                                      │
-       └──────────── 빠른 반복 ────────────────┘
-```
-
-<br>
+![w:700](./assets/cycle.svg)
 
 | 사이클 | Idea | Implementation | Learning |
 |--------|------|----------------|----------|
@@ -166,7 +156,7 @@ footer: "AWS Unicorn Day 2026"
 
 ```
 2/8 ━━━━━━━━ 2/9 ━━━━━━━━━━━━━ 2/12 ━━━━━━━ 2/16
-설계        MVP 구현        콜드 스타트 최적화     문서화
+설계        MVP 구현        콜드 스타트 최적화    문서화
 ```
 
 | Phase | 기간 | 산출물 |
@@ -225,24 +215,7 @@ Claude Code **Skills** 로 각 단계의 컨텍스트를 자동 주입:
 
 # 완성된 아키텍처
 
-```
-  사용자
-   ├── Web Chat UI (S3 + CloudFront)
-   └── Telegram Bot
-         │
-    API Gateway (WebSocket + REST)
-         │
-    Lambda x 7 (라우팅, 인증, 컨테이너 관리)
-         │
-    ECS Fargate (온디맨드)
-    ┌─────────────────────────┐
-    │  Bridge :8080 (HTTP)    │
-    │       ↕                 │
-    │  OpenClaw GW :18789 (WS)│
-    └─────────────────────────┘
-         │
-    DynamoDB x 5  /  S3  /  SSM
-```
+![w:600](./assets/architecture.svg)
 
 **8개 CDK 스택**: Secrets → Network → Storage → Auth/Compute → Api → Web/Monitoring
 
@@ -346,18 +319,16 @@ AI: 1. 먼저 테스트 작성 (JWT 검증, 커넥션 저장, 에러 처리)
 
 # Layer 4-5: AI에게 제약을 주는 기술
 
-### 3계층 컨텍스트 구조
+### 2계층 컨텍스트 구조
 
 
 | 검증 계층 | 추가 비용 | 효과 |
 |----------|---------|------|
 | **README.md** (제약 조건) | $0 | "NAT Gateway 금지", "비용 $1 이내", "시크릿 디스크 미저장", "TDD 필수" → AI의 의사결정 기준 명시 |
 | **Skills** (도메인 지식) | $0 | `/implement`: 단계별 구현 가이드 / `/cost`: 비용 검증 / `/security`: 보안 체크리스트 → 자동 주입 |
-| **MEMORY.md** (누적 학습) | $0 | 142개+ 교훈 자동 누적 → "v2026.2.14는 broken", "launchType 금지" 같은 실수 재발 방지 |
 
 
-
-> AI가 한 번 실수한 것은 MEMORY.md에 기록되어 **다시 반복하지 않는다**
+> README.md와 Skills만으로 **$0 추가 비용** 에 AI의 의사결정 품질을 크게 높인다
 
 ---
 
@@ -384,35 +355,6 @@ AI: 1. 먼저 테스트 작성 (JWT 검증, 커넥션 저장, 에러 처리)
 ```
 
 > 각 회전마다 **측정 → 분석 → 구현 → 검증** — 다계층 검증이 빠른 반복을 가능하게 함
-
----
-
-# 실전: CDK 크로스 스택 디커플링
-
-### AI가 해결한 실제 인프라 문제
-
-**문제**: ComputeStack과 ApiStack 간 CloudFormation 순환 참조
-
-```
-ComputeStack ──exports──→ ApiStack
-     ↑                       │
-     └───── imports ──────────┘   ← 순환!
-```
-
-**AI의 해결책**: SSM Parameter Store 기반 디커플링
-
-```
-ComputeStack ──writes──→ SSM Parameter ──reads──→ ApiStack
-```
-
-**무중단 마이그레이션 5단계**:
-1. SSM 파라미터 수동 생성
-2. ApiStack `--exclusively` 배포 (import 제거)
-3. 수동 SSM 삭제
-4. ComputeStack 배포 (SSM 자동 생성)
-5. ApiStack 재배포 (새 값 적용)
-
-> E2E 테스트가 각 단계의 정합성을 보장 → **대담한 리팩토링도 안전하게**
 
 ---
 
@@ -512,7 +454,7 @@ ComputeStack ──writes──→ SSM Parameter ──reads──→ ApiStack
 | 타입 에러 누적 → 런타임 장애 | pre-commit이 빌드 시점에 차단 |
 | 인프라 변경 → CDK synth 실패 | pre-push E2E가 즉시 발견 |
 | 서비스 간 통합 오류 → 배포 후 발견 | 198 UT + 28 E2E가 사전 검증 |
-| 같은 실수 반복 → 시간 낭비 | MEMORY.md에 교훈 누적 |
+| 같은 실수 반복 → 시간 낭비 | README.md 제약 조건이 사전 차단 |
 
 <br>
 
@@ -531,7 +473,7 @@ ComputeStack ──writes──→ SSM Parameter ──reads──→ ApiStack
 
 ### 2. 다계층 검증은 속도의 전제조건
 
-> TDD + Git Hooks + README.md + Skills + MEMORY.md = 자동 품질 검증.
+> TDD + Git Hooks + README.md + Skills = 자동 품질 검증.
 > 이 파이프라인이 있어야 AI의 속도가 **안전한 속도** 가 된다.
 
 ### 3. Idea → Implementation → Learning을 빠르게 돌려라
@@ -541,40 +483,37 @@ ComputeStack ──writes──→ SSM Parameter ──reads──→ ApiStack
 
 ---
 
-# 향후 계획
+# 결론
 
-### 더 깊은 서버리스화
+<br>
 
-```
-현재: Lambda (라우팅) ──→ Fargate (OpenClaw 전체)
+아이디어 하나에서 출발해 **3일 만에** 프로덕션급 서버리스 시스템을 구축했습니다.
 
-목표: Lambda (라우팅 + Control Plane) ──→ 최소 Container (실행만)
-      ├── config/sessions API → Lambda + DynamoDB
-      ├── cron 스케줄링 → EventBridge + Lambda
-      └── 에이전트 실행 → 최소 컨테이너
-```
+| 바이브 코딩이 제공한 것 | 서버리스가 제공한 것 |
+|----------------------|-------------------|
+| AI와의 대화만으로 설계+구현 | 사용한 만큼만 과금 ($0.27/월) |
+| TDD + Git Hooks로 속도+안정성 | CDK로 인프라도 코드로 관리 |
+| Idea → Implementation → Learning 빠른 반복 | 스케일 걱정 없는 탄력적 인프라 |
 
-### 도전 과제
+<br>
 
-- OpenClaw Gateway의 상시 WebSocket 서버 의존성
-- 에이전트 실행 최대 10분 (Lambda 15분 제한과의 긴장)
-- 로컬 파일시스템 의존 (SQLite 벡터 스토어)
+> 스타트업에게 **바이브 코딩은 무한한 실행력** 을,
+> **서버리스 아키텍처는 무한대의 인프라** 를 제공해 준다.
 
-> 이것도 **Idea → Implementation → Learning** 사이클로 해결해 나갈 예정
+---
+
+<!-- _class: speaker -->
+<!-- _paginate: false -->
+<!-- _footer: "" -->
+
+# 경청해 주셔서 감사합니다!
+
+> 이 슬라이드도 바이브 코딩으로 제작되었습니다.
+
 
 ---
 
 <!-- _class: closing -->
 <!-- _paginate: false -->
-<!-- _footer: "" -->
+<!-- _footer: "&copy; 2026, Amazon Web Services, Inc. or its affiliates. All rights reserved. Amazon Confidential and Trademark." -->
 
-# 감사합니다
-
-<br>
-
-### Q&A
-
-<br>
-
-**정도현**
-AWS Unicorn Day 2026

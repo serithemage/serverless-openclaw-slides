@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 280" fill="none">
+  <!-- Idea Box -->
+  <rect x="40" y="40" width="200" height="90" rx="8" stroke="white" stroke-width="2"/>
+  <text x="140" y="75" text-anchor="middle" fill="white" font-family="sans-serif" font-size="22" font-weight="bold">Idea</text>
+  <text x="140" y="105" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="sans-serif" font-size="16">(아이디어)</text>
+
+  <!-- Implementation Box -->
+  <rect x="300" y="40" width="200" height="90" rx="8" stroke="white" stroke-width="2"/>
+  <text x="400" y="75" text-anchor="middle" fill="white" font-family="sans-serif" font-size="22" font-weight="bold">Implementation</text>
+  <text x="400" y="105" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="sans-serif" font-size="16">(구현)</text>
+
+  <!-- Learning Box -->
+  <rect x="560" y="40" width="200" height="90" rx="8" stroke="white" stroke-width="2"/>
+  <text x="660" y="75" text-anchor="middle" fill="white" font-family="sans-serif" font-size="22" font-weight="bold">Learning</text>
+  <text x="660" y="105" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="sans-serif" font-size="16">(학습)</text>
+
+  <!-- Arrow: Idea -> Implementation -->
+  <line x1="240" y1="85" x2="295" y2="85" stroke="white" stroke-width="2"/>
+  <polygon points="295,79 307,85 295,91" fill="white"/>
+
+  <!-- Arrow: Implementation -> Learning -->
+  <line x1="500" y1="85" x2="555" y2="85" stroke="white" stroke-width="2"/>
+  <polygon points="555,79 567,85 555,91" fill="white"/>
+
+  <!-- Return Arrow: Learning -> Idea (bottom path) -->
+  <path d="M 660 130 L 660 200 Q 660 220 640 220 L 160 220 Q 140 220 140 200 L 140 135"
+        stroke="white" stroke-width="2" fill="none"/>
+  <polygon points="134,138 140,125 146,138" fill="white"/>
+
+  <!-- Label on return arrow -->
+  <text x="400" y="248" text-anchor="middle" fill="#FF9900" font-family="sans-serif" font-size="18" font-weight="bold">빠른 반복</text>
+</svg>

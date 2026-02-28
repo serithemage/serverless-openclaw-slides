@@ -1,0 +1,8 @@
+# Build output
+*.pdf
+
+# Tools
+.omc/
+
+# OS
+.DS_Store

@@ -1,0 +1,299 @@
+/* @theme unicorn-day */
+@import 'default';
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+/* ============================================================
+   Base — all slides get the plain gradient background
+   ============================================================ */
+section {
+  background-image: url('./assets/bg_section.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  font-family: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
+  font-size: 24px;
+  padding: 50px 60px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
+section h1 {
+  color: #ffffff;
+  font-size: 1.6em;
+  font-weight: 700;
+  border-bottom: none;
+  margin-bottom: 0.3em;
+}
+
+section h2 {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.3em;
+  font-weight: 500;
+  border-bottom: none;
+}
+
+section h3 {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+section p,
+section li {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+section strong {
+  color: #FF9900;
+  font-weight: 700;
+}
+
+section a {
+  color: #66bbff;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   Cover slide — full UNICORN DAY branding background
+   Title text at bottom-left with semi-transparent backdrop
+   ============================================================ */
+section.title {
+  background-image:
+    linear-gradient(
+      to bottom,
+      transparent 55%,
+      rgba(0, 0, 0, 0.65) 100%
+    ),
+    url('./assets/bg_cover.jpg');
+  justify-content: flex-end !important;
+  padding: 460px 60px 40px 60px;
+}
+
+section.title h1 {
+  font-size: 1.4em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  margin: 0;
+  line-height: 1.25;
+}
+
+section.title h2 {
+  font-size: 0.8em;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  margin: 0.3em 0 0.1em 0;
+}
+
+section.title p {
+  font-size: 0.75em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+section.title br {
+  display: none;
+}
+
+/* ============================================================
+   Speaker slide — session title top, speaker info bottom-left
+   ============================================================ */
+section.speaker {
+  background-image: url('./assets/bg_cover.jpg');
+  background-size: cover;
+  justify-content: flex-start;
+  padding: 100px 60px 60px 60px;
+}
+
+section.speaker h1 {
+  font-size: 1.6em;
+  margin-bottom: 0.2em;
+}
+
+section.speaker h2 {
+  font-size: 0.85em;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+section.speaker .speaker-info {
+  position: absolute;
+  bottom: 80px;
+  left: 60px;
+}
+
+section.speaker .speaker-info strong {
+  font-size: 1.1em;
+  display: block;
+  margin-bottom: 0.2em;
+}
+
+section.speaker .speaker-info p {
+  margin: 0;
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   Lead — section dividers, centered on gradient
+   ============================================================ */
+section.lead {
+  background-image: url('./assets/bg_section.jpg');
+  background-size: cover;
+  justify-content: center;
+  text-align: center;
+}
+
+section.lead h1 {
+  font-size: 2em;
+  color: #ffffff;
+  border-bottom: none;
+}
+
+section.lead h2 {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: none;
+}
+
+/* ============================================================
+   Closing slide — unicorn + UNICORN DAY branding
+   ============================================================ */
+section.closing {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('./assets/bg_closing.jpg');
+  justify-content: center;
+  text-align: center;
+}
+
+section.closing h1 {
+  font-size: 2.2em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+section.closing h3 {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ============================================================
+   Tables — white text, subtle borders on dark bg
+   ============================================================ */
+section table {
+  font-size: 0.8em;
+  width: 100%;
+  border-collapse: collapse;
+  border: none !important;
+}
+
+section table th {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  font-weight: 600;
+  padding: 8px 12px;
+}
+
+section table td {
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  padding: 8px 12px;
+}
+
+section table thead tr {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+section table tbody tr {
+  background-color: transparent !important;
+}
+
+section table tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* ============================================================
+   Code blocks — dark semi-transparent on dark bg
+   ============================================================ */
+section code {
+  font-size: 0.85em;
+  background-color: rgba(0, 0, 0, 0.35);
+  color: #e8e8e8;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+section pre {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+section pre code {
+  background-color: transparent;
+  color: #e0e0e0;
+  padding: 0;
+  font-size: 0.82em;
+}
+
+/* ============================================================
+   Blockquote — orange left border, semi-transparent bg
+   ============================================================ */
+section blockquote {
+  border-left: 4px solid rgba(255, 153, 0, 0.7);
+  padding: 8px 16px;
+  margin: 16px 0;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 0 6px 6px 0;
+}
+
+section blockquote p {
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+}
+
+/* ============================================================
+   Lists
+   ============================================================ */
+section ul,
+section ol {
+  margin: 0.3em 0;
+}
+
+section li {
+  font-size: 0.95em;
+  margin-bottom: 0.2em;
+}
+
+section li::marker {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   Columns layout (requires --html flag)
+   ============================================================ */
+section .columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+
+/* ============================================================
+   Footer & page number — light on dark
+   ============================================================ */
+section::after {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 13px;
+}
+
+header,
+footer {
+  color: rgba(255, 255, 255, 0.35) !important;
+  font-size: 13px;
+}

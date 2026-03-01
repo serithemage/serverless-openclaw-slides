@@ -42,7 +42,7 @@ slides/
 ├── docs/            # 기획 문서 (PRD, 작업 로그)
 ├── templates/       # 원본 PPTX 템플릿
 ├── .claude/skills/  # Claude Code 스킬
-├── Makefile         # PDF 빌드
+├── Makefile         # PDF/HTML/PPTX 빌드
 ├── slides.md        # 발표 자료 (메인)
 └── theme.css        # Marp 테마 (PPTX 템플릿에서 추출)
 ```
@@ -55,20 +55,17 @@ slides/
 
 프로젝트 루트의 `.vscode/settings.json`에 테마 경로가 설정되어 있음.
 
-### PDF 내보내기
+### 내보내기
 
 ```bash
-cd slides
-make pdf
+make pdf       # slides.pdf
+make html      # slides.html
+make pptx      # slides.pptx
+make all       # 전체 포맷
+make clean     # 생성 파일 삭제
 ```
 
-`slides.pdf`가 생성됨 (`.gitignore`에 포함).
-
-### HTML 내보내기
-
-```bash
-npx @marp-team/marp-cli slides.md --theme theme.css --html --allow-local-files -o slides.html
-```
+생성 파일은 `.gitignore`에 포함.
 
 ## 테마
 

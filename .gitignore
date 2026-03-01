@@ -1,5 +1,7 @@
 # Build output
-*.pdf
+slides.pdf
+slides.html
+slides.pptx
 
 # Tools
 .omc/

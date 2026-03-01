@@ -6,14 +6,22 @@ AWS Unicorn Day 2026 발표 자료. [Marp](https://marp.app/) 기반 마크다�
 
 ```mermaid
 graph TD
+    subgraph 소스
+        S1["~/.claude/projects/&lt;project&gt;/*.jsonl<br>(Claude Code 대화 로그)"]
+        S2[원본 PPTX 템플릿]
+    end
+
     subgraph 콘텐츠 제작
-        A[프로젝트 로그 요약 작성] --> C[Marp 콘텐츠 제작]
+        S1 -->|로그 분석·요약| A[프로젝트 로그 요약 작성]
+        A --> C[Marp 콘텐츠 제작]
         B[핵심 발표 주제 정리] --> C
         C --> D[리뷰 및 수정]
     end
 
     subgraph 슬라이드 제작
-        E[PPTX 템플릿에서 Marp 테마 생성] --> F[테마 적용]
+        S2 -->|python-pptx로 추출| E[배경 이미지 + 디자인 분석]
+        E --> E2[Marp CSS 테마 생성]
+        E2 --> F[테마 적용]
         D --> F
         F --> G[Makefile로 PDF/HTML 변환]
     end
@@ -21,7 +29,8 @@ graph TD
     A -.- A1[docs/project-log-summary.md]
     B -.- B1[docs/PRD.md]
     C -.- C1[slides.md]
-    E -.- E1[templates/*.pptx → theme.css + assets/bg_*.jpg]
+    E -.- E1[assets/bg_*.jpg]
+    E2 -.- E2a[theme.css]
     G -.- G1[make pdf]
 ```
 

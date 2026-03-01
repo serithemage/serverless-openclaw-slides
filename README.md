@@ -2,6 +2,29 @@
 
 AWS Unicorn Day 2026 발표 자료. [Marp](https://marp.app/) 기반 마크다운 프레젠테이션.
 
+## 제작 워크플로우
+
+```mermaid
+graph TD
+    subgraph 콘텐츠 제작
+        A[프로젝트 로그 요약 작성] --> C[Marp 콘텐츠 제작]
+        B[핵심 발표 주제 정리] --> C
+        C --> D[리뷰 및 수정]
+    end
+
+    subgraph 슬라이드 제작
+        E[PPTX 템플릿에서 Marp 테마 생성] --> F[테마 적용]
+        D --> F
+        F --> G[Makefile로 PDF/HTML 변환]
+    end
+
+    A -.- A1[docs/project-log-summary.md]
+    B -.- B1[docs/PRD.md]
+    C -.- C1[slides.md]
+    E -.- E1[templates/*.pptx → theme.css + assets/bg_*.jpg]
+    G -.- G1[make pdf]
+```
+
 ## 디렉토리 구조
 
 ```

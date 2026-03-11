@@ -17,6 +17,7 @@ footer: "&copy; 2026, Amazon Web Services, Inc. or its affiliates. All rights re
 <!-- _footer: "" -->
 
 # 바이브 코딩으로 완성하는 AWS 서버리스 OpenClaw
+> https://github.com/serithemage/serverless-openclaw
 ## 아이디어 하나로 프로덕션급 시스템을 3일 만에 구축한 이야기
 
 <div class="speaker-info">
@@ -26,6 +27,37 @@ footer: "&copy; 2026, Amazon Web Services, Inc. or its affiliates. All rights re
 로보코
 
 </div>
+
+---
+
+# 발표자 소개
+
+<div class="columns">
+<div>
+
+### 정도현
+
+- **로보코** 수석 컨설턴트 (2024.12~)
+- 95년부터 개발자, 아키텍트, 컨설턴트로 활동
+- **AWS** 소프트웨어 개발자 / 테크니컬 트레이너 (2016~2024)
+- 핸즈온 바이브코딩 (한빛미디어) 저자
+
+</div>
+<div>
+
+### 관심 분야
+
+- **바이브 코딩** & AI 기반 개발 방법론
+- 클라우드 마이그레이션 & 마이크로서비스
+- DevOps & CI/CD
+- AI 도구를 활용한 조직 혁신
+
+</div>
+</div>
+
+<br>
+
+> GitHub [@serithemage](https://github.com/serithemage) &nbsp;|&nbsp; Blog [roboco.io](https://roboco.io)
 
 ---
 
@@ -105,8 +137,41 @@ footer: "&copy; 2026, Amazon Web Services, Inc. or its affiliates. All rights re
 
 <br>
 
-> "강력한 보안을 유지하면서, 최소한의 비용으로 프라이빗 OpenClaw 환경 구축. 
+> "강력한 보안을 유지하면서, 최소한의 비용으로 프라이빗 OpenClaw 환경 구축.
 > 이 아이디어를 **바이브 코딩** 으로 구현하려면?"
+
+---
+
+# 왜 서버리스인가?
+
+### 유휴 시간에 비용을 내지 않는 아키텍처
+
+<div class="columns">
+<div>
+
+**EC2 / 상시 Fargate의 한계**
+
+- 하루 1-2시간 사용, **22시간 유휴**
+- 유휴 시간에도 과금 → 월 $35~37
+- 스케일 업/다운 직접 관리 필요
+- OS 패치, 보안 업데이트 부담
+
+</div>
+<div>
+
+**서버리스가 제공하는 것**
+
+- **사용한 만큼만 과금** → 월 $0.27~1.11
+- Fargate Spot으로 **최대 70% 할인**
+- Lambda + API Gateway = **사실상 무료**
+- 관리형 서비스 → **운영 부담 최소화**
+
+</div>
+</div>
+
+<br>
+
+> 핵심 결정 3가지: **NAT Gateway 제거** (-$33/월), **Fargate Spot** (-70%), **API Gateway** (ALB 대비 -$16/월)
 
 ---
 
@@ -221,6 +286,30 @@ Claude Code **Skills** 로 각 단계의 컨텍스트를 자동 주입:
 
 ---
 
+# CDK — 인프라를 코드로 관리
+
+### TypeScript로 인프라를 정의하고, TDD로 검증하고, 한 줄로 배포
+
+```typescript
+// 8개 스택의 의존성 체인 — CDK가 순서를 자동 결정
+const secrets  = new SecretsStack(app, 'Secrets');
+const network  = new NetworkStack(app, 'Network');
+const storage  = new StorageStack(app, 'Storage');
+const compute  = new ComputeStack(app, 'Compute', { vpc, tables, secrets });
+const api      = new ApiStack(app, 'Api', { tables, taskDef });  // SSM으로 디커플링
+```
+
+<br>
+
+| CDK의 강점 | 바이브 코딩과의 시너지 |
+|-----------|-------------------|
+| 인프라를 **TypeScript** 로 정의 | AI가 인프라 코드도 자연스럽게 생성 |
+| `cdk synth` = **CloudFormation 검증** | E2E 테스트로 28개 스택 구성 자동 검증 |
+| `cdk deploy` = **원클릭 배포** | 코드 변경 → 인프라 반영 즉시 확인 |
+| 스택 간 의존성 **자동 해결** | 복잡한 순서 관리를 CDK에 위임 |
+
+---
+
 <!-- _class: lead -->
 
 # Part 2
@@ -317,6 +406,49 @@ AI: 1. 먼저 테스트 작성 (JWT 검증, 커넥션 저장, 에러 처리)
 
 ---
 
+# Layer 2-3: Git Hooks — 자동화된 품질 게이트
+
+### 커밋과 푸시 시점에 자동으로 검증 — 개발자 개입 불필요
+
+<div class="columns">
+<div>
+
+**Layer 2: pre-commit Hook**
+
+```
+git commit
+  ├─ tsc --build     # 타입 검증
+  ├─ eslint          # 코드 스타일 + 버그
+  └─ vitest run      # 198개 단위 테스트
+```
+
+- AI가 생성한 코드도 **예외 없이** 검증
+- 실패 시 **커밋 자체가 차단**
+- 평균 실행 시간: **~15초**
+
+</div>
+<div>
+
+**Layer 3: pre-push Hook**
+
+```
+git push
+  └─ vitest e2e      # 28개 CDK synth 검증
+```
+
+- 8개 CDK 스택의 **CloudFormation 정합성** 검증
+- 스택 간 의존성, 리소스 설정 오류 사전 차단
+- 실패 시 **푸시 차단** → 배포 사고 원천 방지
+
+</div>
+</div>
+
+<br>
+
+> 개발자는 코드만 작성하면 **Git이 알아서 품질을 보장** — 바이브 코딩에 안성맞춤
+
+---
+
 # Layer 4-5: AI에게 제약을 주는 기술
 
 ### 2계층 컨텍스트 구조
@@ -393,8 +525,8 @@ AI: 1. 먼저 테스트 작성 (JWT 검증, 커넥션 저장, 에러 처리)
 | 항목 | 결과 |
 |------|------|
 | 월 운영 비용 | **$0.27 ~ $1.11** |
-| 콜드 스타트 | **0초** (프리워밍) |
-| 보안 계층 | **6계층** ($0 추가 비용) |
+| 콜드 스타트 | **4분 -> 54초** (프리워밍시 0초) |
+| 보안 계층 | **6계층** (추가 비용 없음) |
 | 단위 테스트 | **198개** |
 | E2E 테스트 | **28개** |
 | CDK 스택 | **8개** |

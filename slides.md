@@ -464,6 +464,56 @@ git push
 
 ---
 
+# Layer 5 상세: Skills — AI에게 도메인 전문성을 주입
+
+### `/cost` 와 `/security` 스킬이 AI의 의사결정에 자동으로 체크리스트를 제공
+
+<div class="columns">
+<div>
+
+**`/cost` — 비용 검증 체크리스트**
+
+```
+금지 리소스 자동 차단:
+  ✗ NAT Gateway     (~$33/월)
+  ✗ ALB/ELB         (~$18-25/월)
+  ✗ Interface EP    (~$7/개)
+  ✗ DDB Provisioned (변동)
+  ✗ Lambda in VPC   (NAT 필요)
+
+비용 목표:
+  Free Tier 내   ~$0.23/월
+  Free Tier 후   ~$1.07/월
+  절대 상한      $10/월 미만
+```
+
+</div>
+<div>
+
+**`/security` — 보안 체크리스트**
+
+```
+Bridge 서버:
+  □ Bearer 토큰 (헬스체크 제외)
+  □ TLS + localhost 바인딩
+  □ non-root 실행
+
+시크릿 관리:
+  □ API 키 디스크 미저장
+  □ 환경변수 전달만 허용
+
+IDOR 방지:
+  □ userId 서버사이드 결정
+  □ 클라이언트 userId 불신
+```
+
+</div>
+</div>
+
+> AI가 CDK 스택을 생성할 때 `/cost` 가, 인증 코드를 작성할 때 `/security` 가 **자동으로 주입** 되어 실수를 원천 차단
+
+---
+
 # 실전: 콜드 스타트 해결 과정
 
 ### Idea → Implementation → Learning 4회전
@@ -547,6 +597,55 @@ git push
 
 </div>
 </div>
+
+---
+
+# 비용 효율: EC2 대비 99% 절감
+
+### 3가지 핵심 결정이 월 $37 → $0.27로 만들었다
+
+```
+일반적 접근              이 프로젝트의 접근              절감액
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NAT Gateway   $33/월  →  Fargate Public IP         -$33/월
+ALB           $18/월  →  API Gateway (요청당 과금)    -$18/월
+Secrets Mgr    $2/월  →  SSM Parameter Store (무료)  -$2/월
+EC2 상시 운영  $37/월   →  Fargate Spot (사용시만 과금)  -$35/월
+```
+
+<br>
+
+| 구분 | EC2 상시 운영 | 서버리스 OpenClaw | 절감률 |
+|------|:----------:|:---------------:|:-----:|
+| **월 비용** | $37 | **$0.27** | **99.3%** |
+| **연 비용** | $444 | **$3.24** | **99.3%** |
+| **유휴 비용** | $33.6 (22시간) | **$0** | **100%** |
+
+> "쓰지 않는 시간에 돈을 내지 않는다" — 서버리스의 본질적 가치
+
+---
+
+# 보안: 6계층 방어 — 추가 비용 $0
+
+### 모든 보안 계층이 AWS 기본 기능 + 코드 레벨에서 구현
+
+```
+외부 요청
+  ├─ Layer 1. Security Group ────── 인바운드 포트 제한 (Bridge 8080만 허용)
+  ├─ Layer 2. Bearer Token ──────── 모든 요청에 토큰 검증 (/health 제외)
+  ├─ Layer 3. TLS ───────────────── HTTPS 암호화 (자체 서명 인증서)
+  ├─ Layer 4. localhost 바인딩 ──── OpenClaw Gateway 외부 접근 차단
+  ├─ Layer 5. non-root 실행 ────── 컨테이너 권한 최소화
+  └─ Layer 6. SSM Parameter Store ─ 시크릿 디스크 미저장, 환경변수만 전달
+```
+
+| 보안 영역 | 구현 방식 | 추가 비용 |
+|----------|----------|:--------:|
+| **인증** | Cognito JWT (WS), Telegram Secret Token | $0 |
+| **IDOR 방지** | userId 서버사이드 결정, 클라이언트 입력 불신 | $0 |
+| **IAM** | 리소스 ARN 기반 최소 권한 (Lambda, Fargate 분리) | $0 |
+
+> 서버리스라면 보안과 비용은 트레이드오프가 아니다 — **둘 다 잡을 수 있다!**
 
 ---
 
